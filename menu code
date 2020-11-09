@@ -489,7 +489,7 @@ while True:
       os.system('ssh {} echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml'.format(ip) %ipadd)
       os.system('ssh {} echo "</property>" >> /etc/hadoop/core-site.xml'.format(ip))
       os.system('ssh {} echo "</configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
-      os.mkdir(foldername)
+      os.system(ssh {} 'mkdir {}'.format(ip,foldername))
       os.system('ssh {} hadoop namenode -format'.format(ip))  
       os.system('ssh {} hadoop-daemon.sh start namenode'.format(ip))
       os.system('ssh {} jps'.format(ip))
@@ -524,7 +524,7 @@ while True:
       os.system('ssh {} echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml' .format(ip)%ipadd)
       os.system('ssh {} echo "</property>" >> /etc/hadoop/core-site.xml'.format(ip))
       os.system('ssh {} echo "</configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
-      os.mkdir(foldername)
+      os.system(ssh {} 'mkdir {}'.format(ip,foldername))
       os.system('ssh {} hadoop-daemon.sh start datanode'.format(ip))
       os.system('ssh {} jps'.format(ip))
     elif int (Ch)==35:
