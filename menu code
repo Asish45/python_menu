@@ -1,0 +1,550 @@
+import os
+os.system("tput setaf 3")
+print("\t\t\t\t WELCOME TO THE MENU!!!!")
+print("\t\t\t\t ----------------------")
+print("\t\t\t\t  --------------------")
+print("\n\n")
+system=input("Where you want to run the Commands (Local/Remote): ").lower()
+if system=="local":
+    print("This is Local Execution Environment!!")
+elif system=="remote":
+    ip=input("Enter the Remote System IP:")
+    print("This is Remote Execution Environment!!")
+else:
+    print("Invalid Choice!!")
+    exit()
+
+while True:
+  os.system("tput setaf 3")
+  if system=="local":
+    print(""" \t\t
+                                   YUM CONFIGURATION:-
+                                   -----------------
+        
+        Press0:  For configuring the YUM inside the OS....
+        Press1:  For viewing the YUM is configured or not....
+        
+                                 WEBSERVER CONFIGURATION:-
+                                 -----------------------
+        
+        Press2:  For installing the Httpd Software....
+        Press3:  For removing the Httpd Software....
+        Press4:  For viewing Httpd Software is installed or not....
+        Press5:  For creating a Page....
+        Press6:  For passing an existing webpage....
+        Press7:  For starting the Httpd Service....
+        Press8:  For viewing the status of the Httpd Service....
+        Press9:  For stopping the Httpd Service....
+        Press10:  For restarting the Httpd Service....
+        
+                                      LVM PARTITION:-
+                                      -------------
+
+        Press11: For viewing the Existing Hard Disks....
+        Press12: For viewing the Existing Physical Volumes....
+        Press13: For viewing the Existing Virtual Groups....
+        Press14: For viewing the Existing Logical Volumes....
+        Press15: For viewing all the Mounted Partitions with their Mount Points....
+        Press16: For creating the Physical Volume....
+        Press17: For creating the Volume Group....
+        Press18: For creating the Logical Volume....
+        Press19: For creating a Directory....
+        Press20: For formatting the Logical Volume....
+        Press21: For mounting the Logical Volume....
+        Press22: For extending the Logical Volume Size....
+        Press23: For reducing the Logical Volume Size....
+
+                                      DOCKER:
+                                      ------
+	Press24: For installing docker....
+        Press25: To check how many instances are running....
+	Press26: To check how many images are available....
+	Press27: To Download image From DockerHub....
+	Press28: To Stop Container....
+	Press29: To start and use Container....
+	Press30: To Remove a image....
+	Press31: To check total number of containers created.... 
+	Press32: To delete a container....
+                                      HADOOP:
+                                      ------
+      	Press33: To install hadoop and start master node....
+	Press34: To install hadoop and start data node....
+	Press35: To install hadoop and configure hadoop client....
+        """)
+    Ch=input("Enter Your Choice: ")
+    os.system("tput setaf 7")
+      
+    if int(Ch)==0:
+      Dir=input("Enter the Directory Name where you want to mount the DVD or ISO file: ")
+      os.system("mkdir {}".format(Dir))
+      os.system("mount /dev/cdrom {}".format(Dir))
+      os.system("cd {}; ls".format(Dir))
+      os.system("sudo echo -e '\n[loc1]\nbaseurl=file:///run/media/root/RHEL-8-0-0-BaseOS-x86_64/AppStream\ngpgcheck=0\n\n[loc2]\nbaseurl=file:///run/media/root/RHEL-8-0-0-BaseOS-x86_64/BaseOS\ngpgcheck=0'  > /etc/yum.repos.d/yum2.repo")
+      os.system("sudo yum repolist")
+    elif int(Ch)==1:
+      os.system("yum repolist")
+    elif int(Ch)==2:
+      os.system("yum install httpd -y")
+    elif int(Ch)==3:
+      os.system("yum remove httpd -y")
+    elif int(Ch)==4:
+      os.system("rpm -q httpd")
+    elif int(Ch)==5:
+      page=input("Enter the Page Name: ")
+      os.system("vim /var/www/html/{}.html".format(page))
+    elif int(Ch)==6:
+      page=input("Enter the Page Path: ")
+      pname=input("Just enter the page name from the above path you provided: ")
+      os.system("cp {}  /var/www/html/{}.html".format(page,pname))
+    elif int(Ch)==7:
+      os.system("systemctl start httpd")
+      os.system("tput setaf 7") 
+      print("Httpd Service Started..")
+    elif int(Ch)==8:
+      os.system("systemctl status httpd")
+    elif int(Ch)==9:
+      os.system("systemctl stop httpd")
+      os.system("tput setaf 7")
+      print("Httpd Service Stopped..")
+    elif int(Ch)==10:
+      os.system("systemctl restart httpd")
+      os.system("tput setaf 7")
+      print("Httpd Service Restarted..")
+    elif int(Ch)==11:
+      os.system("fdisk -l")
+    elif int(Ch)==12:
+      os.system("pvdisplay")
+    elif int(Ch)==13:
+      vg=input("Enter the Volume Group Name: ")
+      os.system("vgdisplay {}".format(vg))
+    elif int(Ch)==14:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      os.system("lvdisplay {}/{}".format(vg,lv))
+    elif int(Ch)==15:
+      os.system("df -h")
+    elif int(Ch)==16:
+      pv=input("Enter the Physical Volume Name: ")
+      os.system("pvcreate {}".format(pv))
+    elif int(Ch)==17:
+      vg=input("Enter the Volume Group Name: ")
+      b=int(input("Enter the Number of Physical Volumes you want to add to Virtual Group: "))
+      d1=input("Enter the Physical Volume0 Name: ")
+      d=input("Enter the Physical Volume1 Name: ")
+      os.system("vgcreate {} {} {} ".format(vg,d1,d))
+    elif int(Ch)==18:
+      vg=input("Enter the Volume Group Name from which you want to create a Logical Volume: ")
+      lv=input("Enter the Logical Volume Name: ")
+      size=input("Enter the size of Logical Volume: ")
+      os.system("lvcreate --size {} --name {} {}".format(size,lv,vg))
+    elif int(Ch)==19:
+      dir=input("Enter the Directory Name: ")
+      os.system("mkdir {}".format(dir))
+    elif int(Ch)==20:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      os.system("mkfs.ext4 /dev/{}/{}".format(vg,lv))
+    elif int(Ch)==21:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      l=input("Enter the Mount Point Name: ")
+      os.system("mount /dev/{}/{} {}".format(vg,lv,l))
+    elif int(Ch)==22:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      o=input("Enter the size for extending the Logical Volume: ")
+      os.system("lvextend --size +{} /dev/{}/{}".format(o,vg,lv))
+      os.system("resize2fs /dev/{}/{}".format(vg,lv))
+    elif int(Ch)==23:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      r=input("Enter the size you want for your Logical Volume: ")
+      s=input("Enter the Mount Point Name to which you mount the Logical Volume: ")
+      os.system("umount {}".format(s))
+      os.system("e2fsck -f /dev/{}/{}".format(vg,lv))
+      os.system("resize2fs /dev/{}/{} {}".format(vg,lv,r))
+      os.system("lvreduce --size {} /dev/{}/{} -y ".format(r,vg,lv))
+      os.system("mount /dev/{}/{} {}".format(vg,lv,s))
+    elif int(Ch)==24:	
+      os.system("echo -e '\n[dock]\nbaseurl=https://download.docker.com/linux/centos7/x86_64/stable/\ngpgcheck=0' > /etc/yum.repos.d/docker.repo")
+      os.system("yum repolist")
+      os.system("yum install docker  --nobest")
+      os.system("systemctl enable docker")
+    elif int(Ch)==25:	
+      os.system("docker ps")
+    elif int(Ch)==26:
+      os.system("docker images")
+    elif int (Ch)==27:
+      c_name=input("Please enter the image id:")
+      os.system("docker pull {}".format(c_name))
+    elif int (Ch)==28:
+      c_name=input("Please Specify Name of the Container")
+      os.system("docker stop {}".format(c_name))
+    elif int (Ch)==29:
+      c_name=input("Please Specify Name of the Container")
+      c_image=input("please specify the image id")
+    elif int (Ch)==30:
+      c_image=input("please specify the image id")
+      os.system("docker rmi {}".format(c_image))
+    elif int (Ch)==31:
+      os.system("docker ps -a")
+    elif int (Ch)==32:
+      c_name=input("Please specify the name of the Container")
+      os.system("docker rm {}".format(c_name))
+    elif int (Ch)==33:
+      os.system("echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo")
+      os.system("echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo")
+      os.system("yum repolist")
+      os.system("yum install java")
+      os.system("yum install hadoop")
+      foldername=input("Enter the folder Name you want to use in the cluster: ")
+      #hdfs-site.xml file configuration
+      os.system("echo '<?xml version=\"1.0\"?>' > /etc/hadoop/hdfs-site.xml")
+      os.system("echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/hdfs-site.xml")
+      os.system('echo " " >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo " " >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<configuration>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<property>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<name>dfs.name.dir</name>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<value>/%s</value>" >> /etc/hadoop/hdfs-site.xml' %foldername) 
+      os.system('echo "<configuration>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "</property>" >> /etc/hadoop/hdfs-site.xml')	     
+      os.system('echo "</configuration>" >> /etc/hadoop/hdfs-site.xml')
+      #core-site.xml file configuration 
+      os.system("echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml")
+      os.system("echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/core-site.xml")
+      os.system('echo "  " >> /etc/hadoop/core-site.xml')
+      os.system('echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<configuration>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml')
+      ipadd=input("enter the public ip address of the namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml' %ipadd)
+      os.system('echo "</property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "</configuration>" >> /etc/hadoop/core-site.xml')
+      os.mkdir(foldername)
+      os.system('hadoop namenode -format')  
+      os.system('hadoop-daemon.sh start namenode')
+      os.system('jps')
+    elif int (Ch) == 34:
+      os.system("echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo")
+      os.system("echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo")
+      os.system("yum repolist")
+      os.system("yum install java")
+      os.system("yum install hadoop")
+      foldername=input("Enter the folder Name you want to use in the cluster: ")
+      #hdfs-site.xml file configuration
+      os.system("echo '<?xml version=\"1.0\"?>' > /etc/hadoop/hdfs-site.xml")
+      os.system("echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/hdfs-site.xml")
+      os.system('echo " " >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo " " >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<configuration>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<property>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<name>dfs.data.dir</name>" >> /etc/hadoop/hdfs-site.xml')
+      os.system('echo "<value>/%s</value>" >> /etc/hadoop/hdfs-site.xml' %foldername) 
+      os.system('echo "</property>" >> /etc/hadoop/hdfs-site.xml')	     
+      os.system('echo "</configuration>" >> /etc/hadoop/hdfs-site.xml')
+      #core-site.xml file configuration 
+      os.system("echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml")
+      os.system("echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/core-site.xml")
+      os.system('echo "  " >> /etc/hadoop/core-site.xml')
+      os.system('echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<configuration>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml')
+      ipadd=input("enter the public ip address of the namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml' %ipadd)
+      os.system('echo "</property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "</configuration>" >> /etc/hadoop/core-site.xml')
+      os.mkdir(foldername)
+      os.system('hadoop-daemon.sh start datanode')
+      os.system('jps')
+    elif int (Ch)==35:
+      os.system("echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo")
+      os.system("echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo")
+      os.system("yum repolist")
+      os.system("yum install java")
+      os.system("yum install hadoop")
+      os.system("echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml")
+      os.system("echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?> >> /etc/hadoop/core-site.xml")
+      os.system('echo "  " >> /etc/hadoop/core-site.xml')
+      os.system('echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<configuration>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml')
+      ipadd=input("enter the public ip address of the Namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml' %ipadd)
+      os.system('echo "</property>" >> /etc/hadoop/core-site.xml')
+      os.system('echo "</configuration>" >> /etc/hadoop/core-site.xml')
+    else:
+      print("Oops, Command is not found!!")
+
+
+  elif system=="remote":
+    print(""" \t\t
+                                   YUM CONFIGURATION:-
+                                   -----------------
+        
+        Press0:  For configuring the YUM inside the OS....
+        Press1:  For viewing the YUM is configured or not....
+        
+                                 WEBSERVER CONFIGURATION:-
+                                 -----------------------
+        
+        Press2:  For installing the Httpd Software....
+        Press3:  For removing the Httpd Software....
+        Press4:  For viewing Httpd Software is installed or not....
+        Press5:  For creating a Page....
+        Press6:  For passing an existing webpage....
+        Press7:  For starting the Httpd Service....
+        Press8:  For viewing the status of the Httpd Service....
+        Press9:  For stopping the Httpd Service....
+        Press10:  For restarting the Httpd Service....
+        
+                                      LVM PARTITION:-
+                                      -------------
+
+        Press11: For viewing the Existing Hard Disks....
+        Press12: For viewing the Existing Physical Volumes....
+        Press13: For viewing the Existing Virtual Groups....
+        Press14: For viewing the Existing Logical Volumes....
+        Press15: For viewing all the Mounted Partitions with their Mount Points....
+        Press16: For creating the Physical Volume....
+        Press17: For creating the Volume Group....
+        Press18: For creating the Logical Volume....
+        Press19: For creating a Directory....
+        Press20: For formatting the Logical Volume....
+        Press21: For mounting the Logical Volume....
+        Press22: For extending the Logical Volume Size....
+        Press23: For reducing the Logical Volume Size....
+
+                                      DOCKER:
+                                      ------
+	Press24: For installing docker....
+        Press25: To check how many instances are running....
+	Press26: To check how many images are available....
+	Press27: To Download image From DockerHub....
+	Press28: To Stop Container....
+	Press29: To start and use Container....
+	Press30: To Remove a image....
+	Press31: To check total number of containers created.... 
+	Press32: To delete a container....
+                                      HADOOP:
+                                      ------
+      	Press33: To install hadoop and start master node....
+	Press34: To install hadoop and start data node....
+	Press35: To install hadoop and configure hadoop client....
+        """)
+    Ch=input("Enter Your Choice: ")
+    os.system("tput setaf 7")
+    if int(Ch)==0:
+      Dir=input("Enter the Directory Name where you want to mount the DVD or ISO file: ")
+      os.system("ssh {} mkdir {}".format(ip,Dir))
+      os.system("ssh {} mount /dev/cdrom {}".format(ip,Dir))
+      os.system("ssh {} sudo echo -e '\n[loc1]\nbaseurl=file:///run/media/root/RHEL-8-0-0-BaseOS-x86_64/AppStream\ngpgcheck=0\n\n[loc2]\nbaseurl=file:///run/media/root/RHEL-8-0-0-BaseOS-x86_64/BaseOS\ngpgcheck=0'  > /etc/yum.repos.d/yum2.repo".format(ip))
+      os.system("ssh {} sudo yum repolist".format(ip))
+    elif int(Ch)==1:
+      os.system("ssh {} yum repolist".format(ip))
+    elif int(Ch)==2:
+      os.system("ssh {} yum install httpd -y".format(ip))
+    elif int(Ch)==3:
+      os.system("ssh {} yum remove httpd -y".format(ip))
+    elif int(Ch)==4:
+      os.system("ssh {} rpm -q httpd".format(ip))
+    elif int(Ch)==5:
+      page=input("Enter the Page Name: ")
+      os.system("ssh {} vim /var/www/html/{}.html".format(ip,page))
+    elif int(Ch)==6:
+      page=input("Enter the Page Path: ")
+      pname=input("Just enter the page name from the above path you provided: ")
+      os.system("ssh {} cp {}  /var/www/html/{}.html".format(ip,page,pname))
+    elif int(Ch)==7:  
+      os.system("ssh {} systemctl start httpd".format(ip))
+      os.system("ssh {} tput setaf 7".format(ip))
+      print("Httpd Service Started..")
+    elif int(Ch)==8:
+      os.system("ssh {} systemctl status httpd".format(ip))
+    elif int(Ch)==9:
+      os.system("ssh {} systemctl stop httpd".format(ip))
+      os.system("ssh {} tput setaf 7".format(ip))
+      print("Httpd Service Stopped..")
+    elif int(Ch)==10:
+      os.system("ssh {} systemctl restart httpd".format(ip))
+      os.system("ssh {} tput setaf 7".format(ip))
+      print("Httpd Service Restarted..")
+    elif int(Ch)==11:
+      os.system("ssh {} fdisk -l".format(ip))
+    elif int(Ch)==12:
+      os.system("ssh {} pvdisplay".format(ip))
+    elif int(Ch)==13:
+      vg=input("Enter the Volume Group Name: ")
+      os.system("ssh {} vgdisplay {}".format(ip,vg))
+    elif int(Ch)==14:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      os.system("ssh {} lvdisplay {}/{}".format(ip,vg,lv))
+    elif int(Ch)==15:
+      os.system("ssh {} df -h".format(ip))
+    elif int(Ch)==16:
+      pv=input("Enter the Physical Volume Name: ")
+      os.system("ssh {} pvcreate {}".format(ip,pv))
+    elif int(Ch)==17:
+      vg=input("Enter the Volume Group Name: ")
+      b=int(input("Enter the Number of Physical Volumes you want to add to Virtual Group: "))
+      d1=input("Enter the Physical Volume0 Name: ")
+      d=input("Enter the Physical Volume1 Name: ")
+      os.system("ssh {} vgcreate {} {} {} ".format(ip,vg,d1,d))
+    elif int(Ch)==18:
+      vg=input("Enter the Volume Group Name from which you want to create a Logical Volume: ")
+      lv=input("Enter the Logical Volume Name: ")
+      size=input("Enter the size of Logical Volume: ")
+      os.system("ssh {} lvcreate --size {} --name {} {}".format(ip,size,lv,vg))
+    elif int(Ch)==19:
+      dir=input( "Enter the Directory Name: ")
+      os.system("tput setaf 7")
+      print("Directory is Successfully Created..")
+      os.system("ssh {} mkdir {}".format(ip,dir))
+    elif int(Ch)==20:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      os.system("ssh {} mkfs.ext4 /dev/{}/{}".format(ip,vg,lv))
+    elif int(Ch)==21:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      l=input("Enter the Mount Point Name: ")
+      os.system("ssh {} mount /dev/{}/{} {}".format(ip,vg,lv,l))
+    elif int(Ch)==22:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      o=input("Enter the size for extending the Logical Volume: ")
+      os.system("ssh {} lvextend --size +{} /dev/{}/{}".format(ip,o,vg,lv))
+      os.system("ssh {} resize2fs /dev/{}/{}".format(ip,vg,lv))
+    elif int(Ch)==23:
+      vg=input("Enter the Volume Group Name: ")
+      lv=input("Enter the Logical Volume Name: ")
+      r=input("Enter the size you want for your Logical Volume: ")
+      s=input("Enter the Mount Point Name to which you mount the Logical Volume: ")
+      os.system("ssh {} umount {}".format(ip,s))
+      os.system("ssh {} e2fsck -f /dev/{}/{}".format(ip,vg,lv))
+      os.system("ssh {} resize2fs /dev/{}/{} {}".format(ip,vg,lv,r))
+      os.system("ssh {} lvreduce --size {} /dev/{}/{} -y ".format(ip,r,vg,lv))
+      os.system("ssh {} mount /dev/{}/{} {}".format(ip,vg,lv,s))
+    elif int(Ch)==24:	
+      os.system("ssh {} echo -e '\n[dock]\nbaseurl=https://download.docker.com/linux/centos7/x86_64/stable/\ngpgcheck=0' > /etc/yum.repos.d/docker.repo".format(ip))
+      os.system("ssh {} yum repolist".format(ip))
+      os.system("ssh {} yum install docker  --nobest".format(ip))
+      os.system("ssh {} systemctl enable docker".format(ip))
+    elif int(Ch)==25:	
+      os.system("ssh {} docker ps".format(ip))
+    elif int(Ch)==26:
+      os.system("ssh {} docker images".format(ip))
+    elif int (Ch)==27:
+      c_name=input("Please enter the image id:")
+      os.system("ssh {} docker pull {}".format(ip,c_name))
+    elif int (Ch)==28:
+      c_name=input("Please Specify Name of the Container")
+      os.system("ssh {} docker stop {}".format(ip,c_name))
+    elif int (Ch)==29:
+      c_name=input("Please Specify Name of the Container")
+      c_image=input("please specify the image id")
+    elif int (Ch)==30:
+      c_image=input("please specify the image id")
+      os.system("ssh {} docker rmi {}".format(ip,c_image))
+    elif int (Ch)==31:
+      os.system("ssh {} docker ps -a".format(ip))
+    elif int (Ch)==32:
+      c_name=input("Please specify the name of the Container")
+      os.system("ssh {} docker rm {}".format(ip,c_name))
+    elif int (Ch)==33:
+      os.system("ssh {} echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo".format(ip))
+      os.system("ssh {} echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo".format(ip))
+      os.system("ssh {} yum repolist".format(ip))
+      os.system("ssh {} yum install java".format(ip))
+      os.system("ssh {} yum install hadoop".format(ip))
+      foldername=input("Enter the folder Name you want to use in the cluster: ")
+      #hdfs-site.xml file configuration
+      os.system("ssh {} echo '<?xml version=\"1.0\"?>' > /etc/hadoop/hdfs-site.xml".format(ip))
+      os.system("ssh {} echo '<?xml-stylesheet type=\"text/xsl\"href=\"configuration.xsl\"?>' >> /etc/hadoop/hdfs-site.xml".format(ip))
+      os.system('ssh {} echo " " >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo " " >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<property>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<name>dfs.name.dir</name>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<value>/%s</value>" >> /etc/hadoop/hdfs-site.xml'.format(ip) %foldername) 
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "</property>" >> /etc/hadoop/hdfs-site.xml'.format(ip))	     
+      os.system('ssh {} echo "</configuration>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      #core-site.xml file configuration 
+      os.system("ssh {} echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml".format(ip))
+      os.system("ssh {} echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/core-site.xml".format(ip))
+      os.system('ssh {} echo "  " >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<!Put site-specific property overrides in this file.>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml'.format(ip))
+      ipadd=input("enter the public ip address of the namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('ssh {} echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml'.format(ip) %ipadd)
+      os.system('ssh {} echo "</property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "</configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.mkdir(foldername)
+      os.system('ssh {} hadoop namenode -format'.format(ip))  
+      os.system('ssh {} hadoop-daemon.sh start namenode'.format(ip))
+      os.system('ssh {} jps'.format(ip))
+    elif int (Ch) == 34:
+      os.system("ssh {} echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo".format(ip))
+      os.system("ssh {} echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo".format(ip))
+      os.system("ssh {} yum repolist".format(ip))
+      os.system("ssh {} yum install java".format(ip))
+      os.system("ssh {} yum install hadoop".format(ip))
+      foldername=input("Enter the folder Name you want to use in the cluster: ")
+      #hdfs-site.xml file configuration
+      os.system("ssh {} echo '<?xml version=\"1.0\"?>' > /etc/hadoop/hdfs-site.xml".format(ip))
+      os.system("ssh {} echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/hdfs-site.xml".format(ip))
+      os.system('ssh {} echo " " >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo " " >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<property>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<name>dfs.data.dir</name>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      os.system('ssh {} echo "<value>/%s</value>" >> /etc/hadoop/hdfs-site.xml'.format(ip) %foldername) 
+      os.system('ssh {} echo "</property>" >> /etc/hadoop/hdfs-site.xml'.format(ip))	     
+      os.system('ssh {} echo "</configuration>" >> /etc/hadoop/hdfs-site.xml'.format(ip))
+      #core-site.xml file configuration 
+      os.system("ssh {} echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml".format(ip))
+      os.system("ssh {} echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>' >> /etc/hadoop/core-site.xml".format(ip))
+      os.system('ssh {} echo "  " >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml'.format(ip))
+      ipadd=input("enter the public ip address of the namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('ssh {} echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml' .format(ip)%ipadd)
+      os.system('ssh {} echo "</property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "</configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.mkdir(foldername)
+      os.system('ssh {} hadoop-daemon.sh start datanode'.format(ip))
+      os.system('ssh {} jps'.format(ip))
+    elif int (Ch)==35:
+      os.system("ssh {} echo -e '\n[java]\nbaseurl=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html#license-lightbox\ngpgcheck=0' > /etc/yum.repos.d/java.repo".format(ip))
+      os.system("ssh {} echo -e '\n[hadoop]\nhttps://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm\ngpgcheck=0' > /etc/yum.repos.d/hadoop.repo".format(ip))
+      os.system("ssh {} yum repolist".format(ip))
+      os.system("ssh {} yum install java".format(ip))
+      os.system("ssh {} yum install hadoop".format(ip))
+      os.system("ssh {} echo '<?xml version=\"1.0\"?>' > /etc/hadoop/core-site.xml")
+      os.system("ssh {} echo '<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?> >> /etc/hadoop/core-site.xml".format(ip))
+      os.system('ssh {} echo "  " >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<!-- Put site-specific property overrides in this file. -->" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "<name>fs.default.name</name>" >> /etc/hadoop/core-site.xml'.format(ip))
+      ipadd=input("enter the public ip address of the Namenode and port no. in like IPaddress:portNumber :_____")
+      os.system('ssh {} echo "<value>hdfs://%s</value>" >> /etc/hadoop/core-site.xml'.format(ip) %ipadd)
+      os.system('ssh {} echo "</property>" >> /etc/hadoop/core-site.xml'.format(ip))
+      os.system('ssh {} echo "</configuration>" >> /etc/hadoop/core-site.xml'.format(ip))
+    else:
+      print("ssh {} Oops, Command is not found!!".format(ip))
+      
+
