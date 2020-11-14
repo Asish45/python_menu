@@ -1,2 +1,2 @@
 # python_menu
-python menu program
+Python menu program
